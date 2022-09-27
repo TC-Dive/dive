@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    environment: &common-environment
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-dive}
+      POSTGRES_HOSTNAME: ${DATABASE_HOSTNAME:-db}
+      POSTGRES_PORT: ${DATABASE_PORT:-5432}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    command: -p 5432
+
+  dive_server:
+    image: ghcr.io/the-dive/dive_server:master
+    build:
+      context: ./dive-server
+    tty: true
+    command: bash -c '/code/scripts/run_web.sh'
+    ports:
+      - "8000:8000"
