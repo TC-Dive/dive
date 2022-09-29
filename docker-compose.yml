@@ -15,9 +15,12 @@ services:
 
   dive_server:
     image: ghcr.io/the-dive/dive_server:master
+    env_file: ./dive-server/.env
     build:
       context: ./dive-server
     tty: true
-    command: bash -c '/code/scripts/run_web.sh'
+    command: bash -c '/code/scripts/wait-for-it.sh $$DATABASE_HOSTNAME:$$DATABASE_PORT && /code/scripts/run_web.sh'
     ports:
       - "8000:8000"
+    volumes:
+      - ./dive-server:/code/
