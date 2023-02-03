@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis:alpine
+
   db:
     image: postgres:14
     environment: &common-environment
@@ -22,5 +25,8 @@ services:
     command: bash -c '/code/scripts/wait-for-it.sh $$POSTGRES_HOST:$$POSTGRES_PORT && /code/scripts/run_web.sh'
     ports:
       - "8000:8000"
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./dive-server:/code/
