@@ -22,7 +22,7 @@ services:
     build:
       context: ./dive-server
     tty: true
-    command: bash -c '/code/scripts/wait-for-it.sh $$POSTGRES_HOST:$$POSTGRES_PORT && /code/scripts/run_dev.sh'
+    command: bash -c '/code/scripts/wait-for-it.sh $$POSTGRES_HOST:$$POSTGRES_PORT && /code/scripts/run_prod.sh'
     ports:
       - "8000:8000"
     depends_on:
